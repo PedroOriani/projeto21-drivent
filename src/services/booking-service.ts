@@ -23,7 +23,7 @@ async function createBooking(roomId: number, userId: number) {
 
   const booking = {
     bookingId: postBooking.id,
-    Room: postBooking.room,
+    Room: postBooking.Room,
   };
 
   return booking;
@@ -41,7 +41,7 @@ async function updateBooking(roomId: number, userId: number, bookingId: number) 
 
   const updateBooking = {
     bookingId: booking.id,
-    Room: booking.room,
+    Room: booking.Room,
   };
 
   return updateBooking;
