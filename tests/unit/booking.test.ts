@@ -20,7 +20,9 @@ describe('GET /booking', () => {
   });
 
   it('should return 200 and the booking data', async () => {
-    const bookingInput = {
+    const bookingInput: Booking & {
+      Room: Room;
+    } = {
       id: 1,
       userId: 1,
       roomId: 1,
@@ -28,8 +30,8 @@ describe('GET /booking', () => {
       updatedAt: new Date(),
       Room: {
         id: 1,
-        name: faker.name,
-        capacty: 1,
+        name: faker.name.firstName(),
+        capacity: 1,
         hotelId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -38,14 +40,14 @@ describe('GET /booking', () => {
 
     jest.spyOn(bookingRepository, 'findBookings').mockResolvedValueOnce(bookingInput);
 
-    const booking = bookingService.findBookings(bookingInput.userId);
+    const booking = await bookingService.findBookings(bookingInput.userId);
 
     expect(booking).toEqual({
       id: bookingInput.id,
       Room: {
         id: bookingInput.Room.id,
         name: bookingInput.Room.name,
-        capacty: bookingInput.Room.capacty,
+        capacity: bookingInput.Room.capacity,
         hotelId: bookingInput.Room.hotelId,
         createdAt: bookingInput.Room.createdAt,
         updatedAt: bookingInput.Room.updatedAt,
