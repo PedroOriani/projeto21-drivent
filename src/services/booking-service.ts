@@ -9,7 +9,7 @@ async function findBookings(userId: number) {
 
   const booking = {
     id: bookings.id,
-    room: bookings.Room,
+    Room: bookings.Room,
   };
 
   return booking;
