@@ -17,6 +17,8 @@ async function createBooking(req: AuthenticatedRequest, res: Response) {
   const { roomId } = req.body as InputBookingBody;
   const { userId } = req;
 
+  if (!roomId) throw notFoundError();
+
   const booking = await bookingService.createBooking(roomId, userId);
 
   res.status(httpStatus.OK).send(booking);
