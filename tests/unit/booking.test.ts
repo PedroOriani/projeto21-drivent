@@ -79,7 +79,7 @@ describe('POST /booking', () => {
           state: faker.address.state(),
           number: faker.address.buildingNumber(),
           neighborhood: faker.address.cityName(),
-          adressDetail: faker.address.streetAddress(),
+          addressDetail: faker.address.streetAddress(),
           enrollmentId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -91,7 +91,7 @@ describe('POST /booking', () => {
       TicketType: TicketType;
     } = {
       id: 1,
-      TicketTypeId: 1,
+      ticketTypeId: 1,
       enrollmentId: enrollmentMock.id,
       status: TicketStatus.PAID,
       createdAt: new Date(),
@@ -145,7 +145,7 @@ describe('POST /booking', () => {
           state: faker.address.state(),
           number: faker.address.buildingNumber(),
           neighborhood: faker.address.cityName(),
-          adressDetail: faker.address.streetAddress(),
+          addressDetail: faker.address.streetAddress(),
           enrollmentId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -157,7 +157,7 @@ describe('POST /booking', () => {
       TicketType: TicketType;
     } = {
       id: 1,
-      TicketTypeId: 1,
+      ticketTypeId: 1,
       enrollmentId: enrollmentMock.id,
       status: TicketStatus.PAID,
       createdAt: new Date(),
@@ -218,7 +218,7 @@ describe('POST /booking', () => {
           state: faker.address.state(),
           number: faker.address.buildingNumber(),
           neighborhood: faker.address.cityName(),
-          adressDetail: faker.address.streetAddress(),
+          addressDetail: faker.address.streetAddress(),
           enrollmentId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -230,7 +230,7 @@ describe('POST /booking', () => {
       TicketType: TicketType;
     } = {
       id: 1,
-      TicketTypeId: 1,
+      ticketTypeId: 1,
       enrollmentId: enrollmentMock.id,
       status: TicketStatus.PAID,
       createdAt: new Date(),
@@ -322,7 +322,7 @@ describe('POST /booking', () => {
       Booking: [
         {
           id: bookingMock.id,
-          userId: bookingMock.userid,
+          userId: bookingMock.userId,
           roomId: bookingMock.Room.id,
           createdAt: new Date(),
           updatedAt: new Date(),
