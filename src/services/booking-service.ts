@@ -28,23 +28,6 @@ async function createBooking(roomId: number, userId: number) {
   return booking;
 }
 
-async function verifyTicket(userId: number) {
-  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
-
-  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
-
-  if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel || ticket.status === 'RESERVED')
-    throw forbiddenError();
-}
-
-async function verifyRoom(roomId: number) {
-  const room = await bookingRepository.findBookingByRoomId(roomId);
-
-  if (!room) throw notFoundError();
-
-  if (room.capacity <= room.Booking.length) throw forbiddenError();
-}
-
 async function updateBooking(roomId: number, userId: number, bookingId: number) {
   const bookingByUser = await bookingRepository.findBookings(userId);
 
@@ -60,6 +43,23 @@ async function updateBooking(roomId: number, userId: number, bookingId: number) 
   };
 
   return updateBooking;
+}
+
+async function verifyTicket(userId: number) {
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+
+  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
+
+  if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel || ticket.status === 'RESERVED')
+    throw forbiddenError();
+}
+
+async function verifyRoom(roomId: number) {
+  const room = await bookingRepository.findBookingByRoomId(roomId);
+
+  if (!room) throw notFoundError();
+
+  if (room.capacity <= room.Booking.length) throw forbiddenError();
 }
 
 const bookingService = {
