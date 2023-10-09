@@ -2,6 +2,7 @@ import faker from '@faker-js/faker';
 import { Address, Booking, Enrollment, Room, Ticket, TicketStatus, TicketType } from '@prisma/client';
 import bookingRepository from '@/repositories/booking-repository';
 import bookingService from '@/services/booking-service';
+import { enrollmentRepository, ticketsRepository } from '@/repositories';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -52,6 +53,239 @@ describe('GET /booking', () => {
         createdAt: bookingInput.Room.createdAt,
         updatedAt: bookingInput.Room.updatedAt,
       },
+    });
+  });
+});
+
+describe('POST /booking', () => {
+  it('should return 404 NOT FOUND when there is no room', async () => {
+    const enrollmentMock: Enrollment & {
+      Address: Address[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      cpf: '11111111111',
+      birthday: new Date(),
+      phone: '1111111111',
+      userId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Address: [
+        {
+          id: 1,
+          cep: faker.address.zipCode(),
+          street: faker.address.streetName(),
+          city: faker.address.city(),
+          state: faker.address.state(),
+          number: faker.address.buildingNumber(),
+          neighborhood: faker.address.cityName(),
+          adressDetail: faker.address.streetAddress(),
+          enrollmentId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+    };
+
+    const ticketUserMock: Ticket & {
+      TicketType: TicketType;
+    } = {
+      id: 1,
+      TicketTypeId: 1,
+      enrollmentId: enrollmentMock.id,
+      status: TicketStatus.PAID,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      TicketType: {
+        id: 1,
+        name: faker.name.lastName(),
+        price: 1,
+        isRemote: false,
+        includesHotel: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+
+    const bookingMock = {
+      userId: enrollmentMock.userId,
+      roomId: 1,
+    };
+
+    jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(enrollmentMock);
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(ticketUserMock);
+    jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(null);
+
+    const response = bookingService.createBooking(bookingMock.userId, bookingMock.roomId);
+
+    expect(response).rejects.toEqual({
+      name: 'NotFoundError',
+      message: 'No result for this search!',
+    });
+  });
+
+  it('should return 403 FORBIDDEN when the room is full', async () => {
+    const enrollmentMock: Enrollment & {
+      Address: Address[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      cpf: '11111111111',
+      birthday: new Date(),
+      phone: '1111111111',
+      userId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Address: [
+        {
+          id: 1,
+          cep: faker.address.zipCode(),
+          street: faker.address.streetName(),
+          city: faker.address.city(),
+          state: faker.address.state(),
+          number: faker.address.buildingNumber(),
+          neighborhood: faker.address.cityName(),
+          adressDetail: faker.address.streetAddress(),
+          enrollmentId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+    };
+
+    const ticketUserMock: Ticket & {
+      TicketType: TicketType;
+    } = {
+      id: 1,
+      TicketTypeId: 1,
+      enrollmentId: enrollmentMock.id,
+      status: TicketStatus.PAID,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      TicketType: {
+        id: 1,
+        name: faker.name.lastName(),
+        price: 1,
+        isRemote: false,
+        includesHotel: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+
+    const roomMock: Room & {
+      Booking: Booking[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      capacity: 0,
+      hotelId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Booking: [],
+    };
+
+    jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(enrollmentMock);
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(ticketUserMock);
+    jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
+
+    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.roomId);
+
+    expect(response).rejects.toEqual({
+      name: 'ForbiddenError',
+      message: 'error 403',
+    });
+  });
+
+  it('should create a booking', async () => {
+    const enrollmentMock: Enrollment & {
+      Address: Address[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      cpf: '11111111111',
+      birthday: new Date(),
+      phone: '1111111111',
+      userId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Address: [
+        {
+          id: 1,
+          cep: faker.address.zipCode(),
+          street: faker.address.streetName(),
+          city: faker.address.city(),
+          state: faker.address.state(),
+          number: faker.address.buildingNumber(),
+          neighborhood: faker.address.cityName(),
+          adressDetail: faker.address.streetAddress(),
+          enrollmentId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+    };
+
+    const ticketUserMock: Ticket & {
+      TicketType: TicketType;
+    } = {
+      id: 1,
+      TicketTypeId: 1,
+      enrollmentId: enrollmentMock.id,
+      status: TicketStatus.PAID,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      TicketType: {
+        id: 1,
+        name: faker.name.lastName(),
+        price: 1,
+        isRemote: false,
+        includesHotel: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+
+    const roomMock: Room & {
+      Booking: Booking[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      capacity: 4,
+      hotelId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Booking: [],
+    };
+
+    const bookingMock: Booking & {
+      Room: Room;
+    } = {
+      id: 1,
+      userId: enrollmentMock.userId,
+      roomId: roomMock.id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Room: {
+        id: roomMock.id,
+        name: roomMock.name,
+        capacity: roomMock.capacity,
+        hotelId: roomMock.hotelId,
+        createdAt: roomMock.createdAt,
+        updatedAt: roomMock.updatedAt,
+      },
+    };
+
+    jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(enrollmentMock);
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(ticketUserMock);
+    jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
+    jest.spyOn(bookingRepository, 'createBooking').mockResolvedValueOnce(bookingMock);
+
+    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.roomId);
+
+    expect(response).rejects.toEqual({
+      bookingId: bookingMock.id,
+      Room: bookingMock.Room,
     });
   });
 });
