@@ -283,7 +283,7 @@ describe('POST /booking', () => {
 
     const response = bookingService.createBooking(enrollmentMock.userId, roomMock.id);
 
-    expect(response).rejects.toEqual({
+    expect(response).toEqual({
       bookingId: bookingMock.id,
       Room: bookingMock.Room,
     });
