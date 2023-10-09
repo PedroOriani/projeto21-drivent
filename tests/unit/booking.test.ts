@@ -281,7 +281,7 @@ describe('POST /booking', () => {
     jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
     jest.spyOn(bookingRepository, 'createBooking').mockResolvedValueOnce(bookingMock);
 
-    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.id);
+    const response = await bookingService.createBooking(enrollmentMock.userId, roomMock.id);
 
     expect(response).toEqual({
       bookingId: bookingMock.id,
