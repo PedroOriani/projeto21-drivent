@@ -189,7 +189,7 @@ describe('POST /booking', () => {
     jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(ticketUserMock);
     jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
 
-    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.roomId);
+    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.id);
 
     expect(response).rejects.toEqual({
       name: 'ForbiddenError',
@@ -281,7 +281,7 @@ describe('POST /booking', () => {
     jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
     jest.spyOn(bookingRepository, 'createBooking').mockResolvedValueOnce(bookingMock);
 
-    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.roomId);
+    const response = bookingService.createBooking(enrollmentMock.userId, roomMock.id);
 
     expect(response).rejects.toEqual({
       bookingId: bookingMock.id,
