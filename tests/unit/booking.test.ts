@@ -289,3 +289,68 @@ describe('POST /booking', () => {
     });
   });
 });
+
+describe('POST /booking', () => {
+  it('should update a booking', async () => {
+    const bookingMock: Booking & {
+      Room: Room;
+    } = {
+      id: 1,
+      userId: 1,
+      roomId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Room: {
+        id: 1,
+        name: faker.name.firstName(),
+        capacity: 2,
+        hotelId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+
+    const roomMock: Room & {
+      Booking: Booking[];
+    } = {
+      id: 1,
+      name: faker.name.firstName(),
+      capacity: 4,
+      hotelId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Booking: [
+        {
+          id: bookingMock.id,
+          userId: bookingMock.userid,
+          roomId: bookingMock.Room.id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+    };
+    jest.spyOn(bookingRepository, 'findBookings').mockResolvedValueOnce(bookingMock);
+    jest.spyOn(bookingRepository, 'findBookingByRoomId').mockResolvedValueOnce(roomMock);
+    jest.spyOn(bookingRepository, 'updateBooking').mockResolvedValueOnce(bookingMock);
+
+    const updateMock = {
+      userId: bookingMock.userId,
+      bookingId: bookingMock.id,
+      roomId: bookingMock.roomId,
+    };
+
+    const response = await bookingService.updateBooking(updateMock.userId, updateMock.bookingId, updateMock.roomId);
+
+    expect(response).toEqual({
+      bookingId: expect.any(Number),
+      Room: {
+        id: expect.any(Number),
+        name: expect.any(String),
+        capacity: expect.any(Number),
+        hotelId: expect.any(Number),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      },
+    });
+  });
+});
