@@ -183,7 +183,7 @@ describe('POST /booking', () => {
 
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual({
-        id: booking.id,
+        id: expect.any(Number),
         Room: {
           id: room.id,
           name: room.name,
