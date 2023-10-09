@@ -175,7 +175,7 @@ describe('POST /booking', () => {
       await createPayment(ticket.id, ticketType.price);
       const hotel = await createHotel();
       const room = await createRoomWithHotelId(hotel.id);
-      const booking = await createBooking(user.id, room.id);
+      //const booking = await createBooking(user.id, room.id);
 
       const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
         roomId: room.id,
