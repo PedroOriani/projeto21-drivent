@@ -166,34 +166,34 @@ describe('POST /booking', () => {
       expect(response.status).toEqual(httpStatus.FORBIDDEN);
     });
 
-    // it('should responde with status 200 and booking data when its ok', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
-    //   const ticketType = await createTicketType(false, true);
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createPayment(ticket.id, ticketType.price);
-    //   const hotel = await createHotel();
-    //   const room = await createRoomWithHotelId(hotel.id);
-    //   const booking = await createBooking(user.id, room.id);
+    it('should responde with status 200 and booking data when its ok', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketType(false, true);
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+      const booking = await createBooking(user.id, room.id);
 
-    //   const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
-    //     roomId: room.id,
-    //   });
+      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
+        roomId: room.id,
+      });
 
-    //   expect(response.status).toBe(httpStatus.OK);
-    //   expect(response.body).toEqual({
-    //     id: booking.id,
-    //     Room: {
-    //       id: room.id,
-    //       name: room.name,
-    //       hotelId: hotel.id,
-    //       capacity: room.capacity,
-    //       createdAt: room.createdAt.toISOString(),
-    //       updatedAt: room.updatedAt.toISOString(),
-    //     },
-    //   });
-    // });
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual({
+        id: booking.id,
+        Room: {
+          id: room.id,
+          name: room.name,
+          hotelId: hotel.id,
+          capacity: room.capacity,
+          createdAt: room.createdAt.toISOString(),
+          updatedAt: room.updatedAt.toISOString(),
+        },
+      });
+    });
   });
 });
 
@@ -281,33 +281,33 @@ describe('PUT /booking/:bookingId', () => {
       expect(response.status).toEqual(httpStatus.FORBIDDEN);
     });
 
-    // it('should responde with status 200 and booking data when its ok', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
-    //   const ticketType = await createTicketType(false, true);
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createPayment(ticket.id, ticketType.price);
-    //   const hotel = await createHotel();
-    //   const room = await createRoomWithHotelId(hotel.id);
-    //   const booking = await createBooking(user.id, room.id);
+    it('should responde with status 200 and booking data when its ok', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketType(false, true);
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+      const booking = await createBooking(user.id, room.id);
 
-    //   const response = await server.put(`/booking/${booking.id}`).set('Authorization', `Bearer ${token}`).send({
-    //     roomId: room.id,
-    //   });
+      const response = await server.put(`/booking/${booking.id}`).set('Authorization', `Bearer ${token}`).send({
+        roomId: room.id,
+      });
 
-    //   expect(response.status).toBe(httpStatus.OK);
-    //   expect(response.body).toEqual({
-    //     bookingId: expect.any(Number),
-    //     Room: {
-    //       id: room.id,
-    //       name: room.name,
-    //       hotelId: hotel.id,
-    //       capacity: room.capacity,
-    //       createdAt: room.createdAt.toISOString(),
-    //       updatedAt: room.updatedAt.toISOString(),
-    //     },
-    //   });
-    // });
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual({
+        bookingId: expect.any(Number),
+        Room: {
+          id: room.id,
+          name: room.name,
+          hotelId: hotel.id,
+          capacity: room.capacity,
+          createdAt: room.createdAt.toISOString(),
+          updatedAt: room.updatedAt.toISOString(),
+        },
+      });
+    });
   });
 });
