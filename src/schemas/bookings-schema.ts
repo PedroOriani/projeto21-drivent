@@ -1,8 +1,8 @@
-import { InputBookingBody } from "@/protocols";
-import Joi from "joi";
+import Joi from 'joi';
+import { InputBookingBody } from '@/protocols';
 
 const bookingSchema = Joi.object<InputBookingBody>({
-    roomId: Joi.number().required()
-})
+  roomId: Joi.number().required(),
+});
 
 export default bookingSchema;

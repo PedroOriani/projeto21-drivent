@@ -62,7 +62,7 @@ export function handleApplicationErrors(
     return res.status(httpStatus.PAYMENT_REQUIRED).send(err.message);
   }
 
-  if (err.name === 'forbiddenError') {
+  if (err.name === 'ForbiddenError') {
     return res.status(httpStatus.FORBIDDEN).send(err.message);
   }
 
@@ -71,7 +71,6 @@ export function handleApplicationErrors(
       message: err.message,
     });
   }
-
 
   /* eslint-disable-next-line no-console */
   console.error(err);
